@@ -135,8 +135,8 @@ void QUrhoWidget::resizeEvent(QResizeEvent* e)
 
 		Graphics* graphics = GetSubsystem<Graphics>();
 
-		SDL_Window * win = (SDL_Window*)graphics->GetWindow();
-		SDL_SetWindowSize(win, width, height);
+		//SDL_Window * win = (SDL_Window*)graphics->GetWindow();
+		//SDL_SetWindowSize(win, width, height);
 	}
 }
 
