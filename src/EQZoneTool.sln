@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EQZoneToolApp", "EQZoneToolApp\EQZoneToolApp.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zone-utilities", "..\contrib\projects\zone-utilities.vcxproj", "{200FB60C-6C01-48A7-886A-8E3683EB21BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contrib", "contrib", "{966102B6-F24E-4B06-9A38-D110501C14D4}"
+	ProjectSection(SolutionItems) = preProject
+		..\contrib\glm\util\glm.natvis = ..\contrib\glm\util\glm.natvis
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "..\contrib\imgui\imgui.vcxproj", "{81EA8021-75BF-4D3F-8F60-12755690F6F6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\contrib\zlib\zlib.vcxproj", "{D5FC478C-D94C-437F-9911-14F1FB7B9A2B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui_custom", "imgui_custom\imgui_custom.vcxproj", "{27311D19-47D8-433B-A23A-9D41F2650DDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.ActiveCfg = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.Build.0 = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.Build.0 = Release|Win32
+		{200FB60C-6C01-48A7-886A-8E3683EB21BC}.Debug|x86.ActiveCfg = Debug|Win32
+		{200FB60C-6C01-48A7-886A-8E3683EB21BC}.Debug|x86.Build.0 = Debug|Win32
+		{200FB60C-6C01-48A7-886A-8E3683EB21BC}.Release|x86.ActiveCfg = Release|Win32
+		{200FB60C-6C01-48A7-886A-8E3683EB21BC}.Release|x86.Build.0 = Release|Win32
+		{81EA8021-75BF-4D3F-8F60-12755690F6F6}.Debug|x86.ActiveCfg = Debug|Win32
+		{81EA8021-75BF-4D3F-8F60-12755690F6F6}.Debug|x86.Build.0 = Debug|Win32
+		{81EA8021-75BF-4D3F-8F60-12755690F6F6}.Release|x86.ActiveCfg = Release|Win32
+		{81EA8021-75BF-4D3F-8F60-12755690F6F6}.Release|x86.Build.0 = Release|Win32
+		{D5FC478C-D94C-437F-9911-14F1FB7B9A2B}.Debug|x86.ActiveCfg = Debug|Win32
+		{D5FC478C-D94C-437F-9911-14F1FB7B9A2B}.Debug|x86.Build.0 = Debug|Win32
+		{D5FC478C-D94C-437F-9911-14F1FB7B9A2B}.Release|x86.ActiveCfg = Release|Win32
+		{D5FC478C-D94C-437F-9911-14F1FB7B9A2B}.Release|x86.Build.0 = Release|Win32
+		{27311D19-47D8-433B-A23A-9D41F2650DDC}.Debug|x86.ActiveCfg = Debug|Win32
+		{27311D19-47D8-433B-A23A-9D41F2650DDC}.Debug|x86.Build.0 = Debug|Win32
+		{27311D19-47D8-433B-A23A-9D41F2650DDC}.Release|x86.ActiveCfg = Release|Win32
+		{27311D19-47D8-433B-A23A-9D41F2650DDC}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{200FB60C-6C01-48A7-886A-8E3683EB21BC} = {966102B6-F24E-4B06-9A38-D110501C14D4}
+		{81EA8021-75BF-4D3F-8F60-12755690F6F6} = {966102B6-F24E-4B06-9A38-D110501C14D4}
+		{D5FC478C-D94C-437F-9911-14F1FB7B9A2B} = {966102B6-F24E-4B06-9A38-D110501C14D4}
+	EndGlobalSection
+EndGlobal

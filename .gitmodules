@@ -1,0 +1,14 @@
+[submodule "contrib/glm"]
+	path = contrib/glm
+	url = https://github.com/g-truc/glm.git
+
+[submodule "contrib/rapidjson"]
+	path = contrib/rapidjson
+	url = https://github.com/miloyip/rapidjson.git
+[submodule "contrib/zone-utilities"]
+	path = contrib/zone-utilities
+	url = https://github.com/brainiac/zone-utilities.git
+	branch = master
+[submodule "contrib/urho3d"]
+	path = contrib/urho3d
+	url = https://github.com/urho3d/Urho3D.git
