@@ -2,11 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)$(Configuration)\build\$(ProjectName)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\contrib\glm\glm;$(SolutionDir)..\contrib\imgui;$(SolutionDir)..\contrib\rapidjson\include;$(SolutionDir)..\contrib\zlib\Include;$(SolutionDir)..\contrib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\contrib\urho3d-build\include;$(SolutionDir)..\contrib\urho3d-build\include\Urho3D\ThirdParty;$(SolutionDir)..\contrib\glm\glm;$(SolutionDir)..\contrib\imgui;$(SolutionDir)..\contrib\rapidjson\include;$(SolutionDir)..\contrib\zlib\Include;$(SolutionDir)..\contrib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\contrib\urho3d-build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

@@ -5,6 +5,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

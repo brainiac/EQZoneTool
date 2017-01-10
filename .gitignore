@@ -85,3 +85,5 @@ GeneratedFiles
 [iI]ntermediate/
 [dD]ebug/
 [rR]elease/
+
+contrib/urho3d-build/

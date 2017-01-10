@@ -1,19 +1,16 @@
-<UI version="4.0" >
- <class>EQZoneToolAppClass</class>
- <widget class="QMainWindow" name="EQZoneToolAppClass" >
-  <property name="objectName" >
-   <string notr="true">EQZoneToolAppClass</string>
-  </property>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>EQZoneToolApp</string>
+   <string>MainWindow</string>
   </property>
   <widget class="QMenuBar" name="menuBar" />
   <widget class="QToolBar" name="mainToolBar" />
@@ -22,8 +19,6 @@
  </widget>
  <layoutDefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
- <resources>
-   <include location="EQZoneToolApp.qrc"/>
- </resources>
+ <resources/>
  <connections/>
-</UI>
+</ui>
