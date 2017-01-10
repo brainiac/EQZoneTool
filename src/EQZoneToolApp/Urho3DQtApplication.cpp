@@ -30,38 +30,39 @@
 
 #include <QTimer>
 
-Urho3DQtApplication::Urho3DQtApplication(int argc, char** argv) : QApplication(argc, argv), Object(new Context())
+Urho3DQtApplication::Urho3DQtApplication(int argc, char** argv)
+	: QApplication(argc, argv)
+	, Object(new Context())
 {
-	yaw_ = 0.0f;
-	pitch_ = 0.0f;
-	mainWindow_ = new Urho3DQtMainWindow();
+	m_yaw = 0.0f;
+	m_pitch = 0.0f;
+	m_mainWindow = std::make_unique<Urho3DQtMainWindow>(context_);
 }
 
 Urho3DQtApplication::~Urho3DQtApplication()
 {
-	delete mainWindow_;
 }
 
 int Urho3DQtApplication::Run()
 {
-	if (!mainWindow_)
+	if (!m_mainWindow)
 		return -1;
 
-	engine_ = new Engine(context_);
+	m_engine = new Engine(context_);
 
 	VariantMap engineParameters;
 	engineParameters["FrameLimiter"] = false;
 	engineParameters["LogName"] = "Urho3DQtSample.log";
-	QWidget* centralWidget = mainWindow_->centralWidget();
+	QWidget* centralWidget = m_mainWindow->centralWidget();
 	engineParameters["ExternalWindow"] = (void*)centralWidget->winId();
 
-	if (!engine_->Initialize(engineParameters))
+	if (!m_engine->Initialize(engineParameters))
 		return -1;
 
 	SetupSample();
 
 	QTimer timer;
-	connect(&timer, SIGNAL(timeout()), this, SLOT(OnTimeout()));
+	connect(&timer, &QTimer::timeout, this, &Urho3DQtApplication::OnTimeout);
 	timer.start(1000 / 60);
 
 	return QApplication::exec();
@@ -69,8 +70,8 @@ int Urho3DQtApplication::Run()
 
 void Urho3DQtApplication::OnTimeout()
 {
-	if (engine_ && !engine_->IsExiting())
-		engine_->RunFrame();
+	if (m_engine && !m_engine->IsExiting())
+		m_engine->RunFrame();
 }
 
 void Urho3DQtApplication::SetupSample()
@@ -110,31 +111,31 @@ void Urho3DQtApplication::CreateLogo()
 
 	// Create logo sprite and add to the UI layout
 	UI* ui = GetSubsystem<UI>();
-	logoSprite_ = ui->GetRoot()->CreateChild<Sprite>();
+	m_logoSprite = ui->GetRoot()->CreateChild<Sprite>();
 
 	// Set logo sprite texture
-	logoSprite_->SetTexture(logoTexture);
+	m_logoSprite->SetTexture(logoTexture);
 
 	int textureWidth = logoTexture->GetWidth();
 	int textureHeight = logoTexture->GetHeight();
 
 	// Set logo sprite scale
-	logoSprite_->SetScale(256.0f / textureWidth);
+	m_logoSprite->SetScale(256.0f / textureWidth);
 
 	// Set logo sprite size
-	logoSprite_->SetSize(textureWidth, textureHeight);
+	m_logoSprite->SetSize(textureWidth, textureHeight);
 
 	// Set logo sprite hot spot
-	logoSprite_->SetHotSpot(0, textureHeight);
+	m_logoSprite->SetHotSpot(0, textureHeight);
 
 	// Set logo sprite alignment
-	logoSprite_->SetAlignment(HA_LEFT, VA_BOTTOM);
+	m_logoSprite->SetAlignment(HA_LEFT, VA_BOTTOM);
 
 	// Make logo not fully opaque to show the scene underneath
-	logoSprite_->SetOpacity(0.75f);
+	m_logoSprite->SetOpacity(0.75f);
 
 	// Set a low priority for the logo so that other UI elements can be drawn on top
-	logoSprite_->SetPriority(-100);
+	m_logoSprite->SetPriority(-100);
 }
 
 void Urho3DQtApplication::SetWindowTitleAndIcon()
@@ -153,11 +154,11 @@ void Urho3DQtApplication::CreateConsoleAndDebugHud()
 	XMLFile* xmlFile = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
 
 	// Create console
-	Console* console = engine_->CreateConsole();
+	Console* console = m_engine->CreateConsole();
 	console->SetDefaultStyle(xmlFile);
 
 	// Create debug HUD.
-	DebugHud* debugHud = engine_->CreateDebugHud();
+	DebugHud* debugHud = m_engine->CreateDebugHud();
 	debugHud->SetDefaultStyle(xmlFile);
 }
 
@@ -265,18 +266,18 @@ void Urho3DQtApplication::CreateScene()
 {
 	ResourceCache* cache = GetSubsystem<ResourceCache>();
 
-	scene_ = new Scene(context_);
+	m_scene = new Scene(context_);
 
 	// Create the Octree component to the scene. This is required before adding any drawable components, or else nothing will
 	// show up. The default octree volume will be from (-1000, -1000, -1000) to (1000, 1000, 1000) in world coordinates; it
 	// is also legal to place objects outside the volume but their visibility can then not be checked in a hierarchically
 	// optimizing manner
-	scene_->CreateComponent<Octree>();
+	m_scene->CreateComponent<Octree>();
 
 	// Create a child scene node (at world origin) and a StaticModel component into it. Set the StaticModel to show a simple
 	// plane mesh with a "stone" material. Note that naming the scene nodes is optional. Scale the scene node larger
 	// (100 x 100 world units)
-	Node* planeNode = scene_->CreateChild("Plane");
+	Node* planeNode = m_scene->CreateChild("Plane");
 	planeNode->SetScale(Vector3(100.0f, 1.0f, 100.0f));
 	StaticModel* planeObject = planeNode->CreateComponent<StaticModel>();
 	planeObject->SetModel(cache->GetResource<Model>("Models/Plane.mdl"));
@@ -285,7 +286,7 @@ void Urho3DQtApplication::CreateScene()
 	// Create a directional light to the world so that we can see something. The light scene node's orientation controls the
 	// light direction; we will use the SetDirection() function which calculates the orientation from a forward direction vector.
 	// The light will use default settings (white light, no shadows)
-	Node* lightNode = scene_->CreateChild("DirectionalLight");
+	Node* lightNode = m_scene->CreateChild("DirectionalLight");
 	lightNode->SetDirection(Vector3(0.6f, -1.0f, 0.8f)); // The direction vector does not need to be normalized
 	Light* light = lightNode->CreateComponent<Light>();
 	light->SetLightType(LIGHT_DIRECTIONAL);
@@ -299,7 +300,7 @@ void Urho3DQtApplication::CreateScene()
 	const unsigned NUM_OBJECTS = 200;
 	for (unsigned i = 0; i < NUM_OBJECTS; ++i)
 	{
-		Node* mushroomNode = scene_->CreateChild("Mushroom");
+		Node* mushroomNode = m_scene->CreateChild("Mushroom");
 		mushroomNode->SetPosition(Vector3(Random(90.0f) - 45.0f, 0.0f, Random(90.0f) - 45.0f));
 		mushroomNode->SetRotation(Quaternion(0.0f, Random(360.0f), 0.0f));
 		mushroomNode->SetScale(0.5f + Random(2.0f));
@@ -310,11 +311,11 @@ void Urho3DQtApplication::CreateScene()
 
 	// Create a scene node for the camera, which we will move around
 	// The camera will use default settings (1000 far clip distance, 45 degrees FOV, set aspect ratio automatically)
-	cameraNode_ = scene_->CreateChild("Camera");
-	cameraNode_->CreateComponent<Camera>();
+	m_cameraNode = m_scene->CreateChild("Camera");
+	m_cameraNode->CreateComponent<Camera>();
 
 	// Set an initial position for the camera scene node above the plane
-	cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+	m_cameraNode->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
 }
 
 void Urho3DQtApplication::CreateInstructions()
@@ -340,7 +341,7 @@ void Urho3DQtApplication::SetupViewport()
 	// Set up a viewport to the Renderer subsystem so that the 3D scene can be seen. We need to define the scene and the camera
 	// at minimum. Additionally we could configure the viewport screen size and the rendering path (eg. forward / deferred) to
 	// use, but now we just use full screen and default render path configured in the engine command line options
-	SharedPtr<Viewport> viewport(new Viewport(context_, scene_, cameraNode_->GetComponent<Camera>()));
+	SharedPtr<Viewport> viewport(new Viewport(context_, m_scene, m_cameraNode->GetComponent<Camera>()));
 	renderer->SetViewport(0, viewport);
 }
 
@@ -360,24 +361,24 @@ void Urho3DQtApplication::MoveCamera(float timeStep)
 	{
 		// Use this frame's mouse motion to adjust camera node yaw and pitch. Clamp the pitch between -90 and 90 degrees
 		IntVector2 mouseMove = input->GetMouseMove();
-		yaw_ += MOUSE_SENSITIVITY * mouseMove.x_;
-		pitch_ += MOUSE_SENSITIVITY * mouseMove.y_;
-		pitch_ = Clamp(pitch_, -90.0f, 90.0f);
+		m_yaw += MOUSE_SENSITIVITY * mouseMove.x_;
+		m_pitch += MOUSE_SENSITIVITY * mouseMove.y_;
+		m_pitch = Clamp(m_pitch, -90.0f, 90.0f);
 		// Construct new orientation for the camera scene node from yaw and pitch. Roll is fixed to zero
-		cameraNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
+		m_cameraNode->SetRotation(Quaternion(m_pitch, m_yaw, 0.0f));
 	}
 
 	// Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
 	// Use the TranslateRelative() function to move relative to the node's orientation. Alternatively we could
 	// multiply the desired direction with the node's orientation quaternion, and use just Translate()
 	if (input->GetKeyDown('W'))
-		cameraNode_->Translate(Vector3::FORWARD * MOVE_SPEED * timeStep);
+		m_cameraNode->Translate(Vector3::FORWARD * MOVE_SPEED * timeStep);
 	if (input->GetKeyDown('S'))
-		cameraNode_->Translate(Vector3::BACK * MOVE_SPEED * timeStep);
+		m_cameraNode->Translate(Vector3::BACK * MOVE_SPEED * timeStep);
 	if (input->GetKeyDown('A'))
-		cameraNode_->Translate(Vector3::LEFT * MOVE_SPEED * timeStep);
+		m_cameraNode->Translate(Vector3::LEFT * MOVE_SPEED * timeStep);
 	if (input->GetKeyDown('D'))
-		cameraNode_->Translate(Vector3::RIGHT * MOVE_SPEED * timeStep);
+		m_cameraNode->Translate(Vector3::RIGHT * MOVE_SPEED * timeStep);
 }
 
 void Urho3DQtApplication::SubscribeToEvents()

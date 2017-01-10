@@ -1,26 +1,23 @@
 
 #include "pch.h"
 #include "Urho3DQtMainWindow.h"
-#include "Urho3DQtCentralWidget.h"
 #include "Urho3DWidget.h"
 
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolBar>
 
-Urho3DQtMainWindow::Urho3DQtMainWindow(QWidget *parent, Qt::WindowFlags flags) :
-	QMainWindow(parent, flags)
+Urho3DQtMainWindow::Urho3DQtMainWindow(Urho3D::Context* context, QWidget* parent, Qt::WindowFlags flags)
+	: QMainWindow(parent, flags)
 {
 	// Set window icon
 	setWindowIcon(QIcon(":/Icons/AppIcon32.png"));
 
-	Urho3D::Context* context = new Urho3D::Context();
-
-	QUrhoWidget* urhoWidget = new QUrhoWidget(context);
-	urhoWidget->Setup();
-	urhoWidget->Start();
-	urhoWidget->resize(800, 600);
-	urhoWidget->show();
+	Urho3DWidget* urhoWidget = new Urho3DWidget(context);
+	//urhoWidget->Setup();
+	//urhoWidget->Start();
+	//urhoWidget->resize(1024, 768);
+	//urhoWidget->show();
 
 	// Set central widget
 	setCentralWidget(urhoWidget);
