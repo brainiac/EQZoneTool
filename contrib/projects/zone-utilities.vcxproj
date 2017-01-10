@@ -107,11 +107,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(SolutionDir)$(Configuration)\build\$(ProjectName)\</IntDir>
-    <OutDir>$(SolutionDir)$(Configuration)\lib\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\build\lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(SolutionDir)$(Configuration)\build\$(ProjectName)\</IntDir>
-    <OutDir>$(SolutionDir)$(Configuration)\lib\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\build\lib\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
